@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
-import '../util/multi_select_list_type.dart';
-import '../util/multi_select_item.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
+
 import '../chip_display/multi_select_chip_display.dart';
+import '../util/multi_select_item.dart';
+import '../util/multi_select_list_type.dart';
 import 'mult_select_dialog.dart';
 
 /// A customizable InkWell widget that opens the MultiSelectDialog
@@ -166,7 +168,8 @@ class MultiSelectDialogField<V> extends FormField<List<V>> {
                 selectedItemsTextStyle: selectedItemsTextStyle,
                 checkColor: checkColor,
               );
-              return _MultiSelectDialogFieldView<V?>._withState(field as _MultiSelectDialogFieldView<V?>, state);
+              return _MultiSelectDialogFieldView<V?>._withState(
+                  field as _MultiSelectDialogFieldView<V?>, state);
             });
 }
 
@@ -282,8 +285,8 @@ class __MultiSelectDialogFieldViewState<V>
   Widget _buildInheritedChipDisplay() {
     List<MultiSelectItem<V>?> chipDisplayItems = [];
     chipDisplayItems = _selectedItems
-        .map((e) => widget.items
-            .firstWhereOrNull((element) => e == element.value))
+        .map((e) =>
+            widget.items.firstWhereOrNull((element) => e == element.value))
         .toList();
     chipDisplayItems.removeWhere((element) => element == null);
     if (widget.chipDisplay != null) {
@@ -342,35 +345,37 @@ class __MultiSelectDialogFieldViewState<V>
       barrierColor: widget.barrierColor,
       context: context,
       builder: (ctx) {
-        return MultiSelectDialog<V>(
-          checkColor: widget.checkColor,
-          selectedItemsTextStyle: widget.selectedItemsTextStyle,
-          searchHintStyle: widget.searchHintStyle,
-          searchTextStyle: widget.searchTextStyle,
-          itemsTextStyle: widget.itemsTextStyle,
-          searchIcon: widget.searchIcon,
-          closeSearchIcon: widget.closeSearchIcon,
-          unselectedColor: widget.unselectedColor,
-          backgroundColor: widget.backgroundColor,
-          colorator: widget.colorator,
-          searchHint: widget.searchHint,
-          selectedColor: widget.selectedColor,
-          onSelectionChanged: widget.onSelectionChanged,
-          height: widget.height,
-          listType: widget.listType,
-          items: widget.items,
-          title: widget.title != null ? widget.title : Text("Select"),
-          initialValue: _selectedItems,
-          searchable: widget.searchable ?? false,
-          confirmText: widget.confirmText,
-          cancelText: widget.cancelText,
-          onConfirm: (selected) {
-            if (widget.state != null) {
-              widget.state!.didChange(selected);
-            }
-            _selectedItems = selected;
-            if (widget.onConfirm != null) widget.onConfirm!(selected);
-          },
+        return PointerInterceptor(
+          child: MultiSelectDialog<V>(
+            checkColor: widget.checkColor,
+            selectedItemsTextStyle: widget.selectedItemsTextStyle,
+            searchHintStyle: widget.searchHintStyle,
+            searchTextStyle: widget.searchTextStyle,
+            itemsTextStyle: widget.itemsTextStyle,
+            searchIcon: widget.searchIcon,
+            closeSearchIcon: widget.closeSearchIcon,
+            unselectedColor: widget.unselectedColor,
+            backgroundColor: widget.backgroundColor,
+            colorator: widget.colorator,
+            searchHint: widget.searchHint,
+            selectedColor: widget.selectedColor,
+            onSelectionChanged: widget.onSelectionChanged,
+            height: widget.height,
+            listType: widget.listType,
+            items: widget.items,
+            title: widget.title != null ? widget.title : Text("Select"),
+            initialValue: _selectedItems,
+            searchable: widget.searchable ?? false,
+            confirmText: widget.confirmText,
+            cancelText: widget.cancelText,
+            onConfirm: (selected) {
+              if (widget.state != null) {
+                widget.state!.didChange(selected);
+              }
+              _selectedItems = selected;
+              if (widget.onConfirm != null) widget.onConfirm!(selected);
+            },
+          ),
         );
       },
     );
